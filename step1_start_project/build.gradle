@@ -1,0 +1,14 @@
+group 'evgzakharov'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+apply plugin: "org.springframework.boot"
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-web')
+
+    testCompile ("junit:junit:4.12")
+}
