@@ -1,6 +1,5 @@
 package migration.simple.responses;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

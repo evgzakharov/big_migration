@@ -1,4 +1,3 @@
 include "step1_start_project"
 
 rootProject.name = 'migration-test'
-
