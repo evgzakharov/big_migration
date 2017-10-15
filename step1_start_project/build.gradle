@@ -21,7 +21,8 @@ sourceCompatibility = 1.8
 apply plugin: "org.springframework.boot"
 
 dependencies {
-    compile('org.springframework.boot:spring-boot-starter-web')
+    compile("org.springframework.boot:spring-boot-starter-web")
 
-    testCompile ("junit:junit:4.12")
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile("junit:junit:4.12")
 }

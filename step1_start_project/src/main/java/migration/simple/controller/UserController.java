@@ -6,7 +6,6 @@ import migration.simple.responses.UserResponse;
 import migration.simple.types.User;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +30,7 @@ public class UserController {
         Optional<User> user = userRepository.findUser(userId);
 
         return user
-                .map(user1 -> new UserResponse(true, "find user with requested id", Arrays.asList(user1)))
+                .map(user1 -> new UserResponse(true, "find user with requested id", Collections.singletonList(user1)))
                 .orElseGet(() -> new UserResponse(false, "user not found", Collections.emptyList()));
     }
 
