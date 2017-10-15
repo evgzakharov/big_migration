@@ -15,6 +15,8 @@ public class UserRepository {
 
     public UserRepository(DBConfiguration.DbConfig dbConfig) {
         this.dbConfig = dbConfig;
+
+        System.out.println(dbConfig);
     }
 
     private Long index = 3L;

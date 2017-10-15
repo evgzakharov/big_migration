@@ -32,7 +32,7 @@ public class DBConfiguration {
     private String unSecure(String password) {
         int secretIndex = password.indexOf("Secret");
 
-        return password.substring(0, secretIndex + 1);
+        return password.substring(0, secretIndex);
     }
 
     public static class DbConfig {
@@ -71,6 +71,15 @@ public class DBConfiguration {
 
         public void setPassword(String password) {
             this.password = password;
+        }
+
+        @Override
+        public String toString() {
+            return "DbConfig{" +
+                    "url='" + url + '\'' +
+                    ", user='" + user + '\'' +
+                    ", password='" + password + '\'' +
+                    '}';
         }
     }
 }
