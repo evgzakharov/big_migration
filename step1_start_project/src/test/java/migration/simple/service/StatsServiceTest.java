@@ -17,12 +17,13 @@ public class StatsServiceTest {
     public void statsServiceShouldReturnRightData() {
         UserRepository userRepositoryMock = mock(UserRepository.class);
 
-        User oldestUser = new User(3L, "UserName3", "Sr3", 30);
         User youngestUser = new User(1L, "UserName1", "Sr1", 21);
+        User someOtherUser = new User(2L, "UserName2", "Sr2", 25);
+        User oldestUser = new User(3L, "UserName3", "Sr3", 30);
 
         when(userRepositoryMock.findAllUsers()).thenReturn(Arrays.asList(
                 youngestUser,
-                new User(2L, "UserName2", "Sr2", 25),
+                someOtherUser,
                 oldestUser
         ));
 
