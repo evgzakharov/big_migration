@@ -12,7 +12,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class StatsServiceTest {
-
     @Test
     public void statsServiceShouldReturnRightData() {
         UserRepository userRepositoryMock = mock(UserRepository.class);

@@ -12,12 +12,12 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class UserResponse extends Response {
-    private List<User> users;
+public class UserAddResponse extends Response {
+    private Long userId;
 
-    public UserResponse(Boolean success, String description, List<User> users) {
+    public UserAddResponse(Boolean success, String description, Long userId) {
         super(success, description);
-        this.users = users;
+        this.userId = userId;
     }
 }
 

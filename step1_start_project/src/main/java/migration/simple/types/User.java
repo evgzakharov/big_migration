@@ -1,8 +1,10 @@
 package migration.simple.types;
 
+import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 @Value
+@EqualsAndHashCode
 public class User {
     private Long id;
     private String name;

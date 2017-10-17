@@ -31,8 +31,15 @@ public class UserRepository {
         return new ArrayList<>(users);
     }
 
-    public synchronized boolean addUser(User newUser) {
-        return users.add(newUser.copy(nextIndex()));
+    public synchronized Optional<Long> addUser(User newUser) {
+        Long newIndex = nextIndex();
+        boolean addStatus = users.add(newUser.copy(newIndex));
+
+        if (addStatus) {
+            return Optional.of(newIndex);
+        } else {
+            return Optional.empty();
+        }
     }
 
     public Optional<User> findUser(Long id) {
