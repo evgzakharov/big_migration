@@ -34,6 +34,9 @@ repositories {
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
     compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion")
+    compile("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
+
+    testCompile("com.nhaarman:mockito-kotlin-kt1.1:1.5.0")
 
     testCompile("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testRuntime("org.junit.jupiter:junit-jupiter-engine:$junitVersion")

@@ -20,7 +20,7 @@ open class DBConfiguration {
         return password.substring(0, secretIndex)
     }
 
-    open class DbConfig(
+    data class DbConfig(
             var url: String = "",
             var user: String = "",
             var password: String = ""

@@ -3,10 +3,7 @@ package migration.simple.repository
 import migration.simple.config.DBConfiguration
 import migration.simple.types.User
 import org.springframework.stereotype.Repository
-
-import java.util.ArrayList
-import java.util.Arrays
-import java.util.Optional
+import java.util.*
 
 @Repository
 open class UserRepository(dbConfig: DBConfiguration.DbConfig) {
@@ -30,7 +27,7 @@ open class UserRepository(dbConfig: DBConfiguration.DbConfig) {
     @Synchronized
     open fun addUser(newUser: User): Long? {
         val newIndex = nextIndex()
-        val addStatus = users.add(newUser.copy(newIndex))
+        val addStatus = users.add(newUser.copy(id = newIndex))
 
         return if (addStatus) {
             newIndex
