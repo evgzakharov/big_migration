@@ -1,4 +1,5 @@
 include "step1_start_project"
+include "step2_migration_to_spring5_junit5"
 
 rootProject.name = 'migration-test'
 
