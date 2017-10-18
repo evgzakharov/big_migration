@@ -5,7 +5,6 @@ import migration.simple.responses.Response;
 import migration.simple.responses.UserAddResponse;
 import migration.simple.responses.UserResponse;
 import migration.simple.types.User;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
