@@ -2,10 +2,8 @@ package migration.simple.repository
 
 import migration.simple.config.DBConfiguration
 import migration.simple.types.User
-import org.springframework.stereotype.Repository
 import java.util.*
 
-@Repository
 open class UserRepository(dbConfig: DBConfiguration.DbConfig) {
 
     private var index: Long = 3L

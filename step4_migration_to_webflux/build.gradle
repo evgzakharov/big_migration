@@ -41,6 +41,8 @@ dependencies {
 
     compile("io.projectreactor.ipc:reactor-netty")
 
+    compile("com.samskivert:jmustache")
+
     compile("com.fasterxml.jackson.module:jackson-module-kotlin")
 
     testCompile("com.nhaarman:mockito-kotlin-kt1.1:1.5.0")

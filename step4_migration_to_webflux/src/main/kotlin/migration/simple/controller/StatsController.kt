@@ -2,16 +2,20 @@ package migration.simple.controller
 
 import migration.simple.responses.StatsResponse
 import migration.simple.service.StatsService
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RestController
+import migration.simple.utils.Controller
+import org.springframework.web.reactive.function.server.RouterFunctionDsl
+import org.springframework.web.reactive.function.server.ServerResponse.ok
+import org.springframework.web.reactive.function.server.body
+import reactor.core.publisher.Flux
 
-@RestController("stats")
-open class StatsController(private val statsService: StatsService) {
+open class StatsController(private val statsService: StatsService) : Controller {
+    override fun nest(): RouterFunctionDsl.() -> Unit = {
+        GET("/stats") { ok().body(stats()) }
+    }
 
-    @GetMapping
-    open fun stats(): StatsResponse {
+    open fun stats(): Flux<StatsResponse> {
         val stats = statsService.getStats()
 
-        return StatsResponse(true, "user stats", stats)
+        return Flux.just(StatsResponse(true, "user stats", stats))
     }
 }

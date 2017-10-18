@@ -5,44 +5,52 @@ import migration.simple.responses.DeleteResponse
 import migration.simple.responses.UserAddResponse
 import migration.simple.responses.UserResponse
 import migration.simple.types.User
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.reactive.function.server.RouterFunctionDsl
+import org.springframework.web.reactive.function.server.ServerResponse.ok
+import org.springframework.web.reactive.function.server.body
+import reactor.core.publisher.Flux
 
-@RestController
 open class UserController(private val userRepository: UserRepository) {
+    fun nest(): RouterFunctionDsl.() -> Unit = {
+        GET("/users") { ok().body(users()) }
+        GET("/user/{id}") { ok().body(users(it.pathVariable("id").toLong())) }
+        PUT("/user") { ok().body(addUser(it.bodyToFlux(User::class.java))) }
+        DELETE("/user/{id}") { ok().body(deleteUser(it.pathVariable("id").toLong())) }
+    }
 
-    @GetMapping("users")
-    open fun users(): UserResponse {
+    open fun users(): Flux<UserResponse> {
         val users = userRepository.findAllUsers()
 
-        return UserResponse(true, "return users", users)
+        return Flux.just(UserResponse(true, "return users", users))
     }
 
-    @GetMapping("user/{id}")
-    open fun users(@PathVariable("id") userId: Long): UserResponse {
+    open fun users(userId: Long): Flux<UserResponse> {
         val user = userRepository.findUser(userId)
 
-        return user
+        val response = user
                 ?.let { UserResponse(true, "find user with requested id", listOf(it)) }
                 ?: UserResponse(false, "user not found", emptyList())
+
+        return Flux.just(response)
     }
 
-    @PutMapping(value = "user")
-    open fun addUser(@RequestBody user: User): UserAddResponse {
-        val addIndex = userRepository.addUser(user)
+    open fun addUser(user: Flux<User>): Flux<UserAddResponse> = user.map {
+        val addIndex = userRepository.addUser(it)
 
-        return addIndex
+        addIndex
                 ?.let { UserAddResponse(true, "user add successfully", it) }
                 ?: UserAddResponse(false, "user not added", -1L)
     }
 
-    @DeleteMapping("user/{id}")
-    open fun deleteUser(@PathVariable("id") id: Long): DeleteResponse {
+    open fun deleteUser(id: Long): Flux<DeleteResponse> {
         val status = userRepository.deleteUser(id)
 
-        return if (status) {
+        val result = if (status) {
             DeleteResponse(true, "user has been deleted")
         } else {
             DeleteResponse(false, "user not been deleted")
         }
+
+        return Flux.just(result)
     }
 }

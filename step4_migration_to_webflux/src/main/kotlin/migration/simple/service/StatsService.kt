@@ -2,9 +2,7 @@ package migration.simple.service
 
 import migration.simple.repository.UserRepository
 import migration.simple.types.Stats
-import org.springframework.stereotype.Service
 
-@Service
 open class StatsService(private val userRepository: UserRepository) {
 
     open fun getStats(): Stats {

@@ -7,3 +7,9 @@ data class User(
         val age: Int
 )
 
+data class Stats(
+        val userCount: Int,
+        val oldestUser: User,
+        val youngestUser: User
+)
+

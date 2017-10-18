@@ -1,10 +1,7 @@
 package migration.simple.config
 
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
 
-@Configuration
-@ConfigurationProperties
 open class DBConfiguration {
     var db: DbConfig = DbConfig()
 
