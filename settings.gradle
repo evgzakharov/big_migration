@@ -1,6 +1,7 @@
 include "step1_start_project"
 include "step2_migration_to_spring5_junit5"
 include "step3_migration_to_kotlin"
+include "step4_migration_to_webflux"
 
 rootProject.name = 'migration-test'
 
