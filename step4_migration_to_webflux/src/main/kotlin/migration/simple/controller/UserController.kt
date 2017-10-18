@@ -12,10 +12,18 @@ import reactor.core.publisher.Flux
 
 open class UserController(private val userRepository: UserRepository) {
     fun nest(): RouterFunctionDsl.() -> Unit = {
-        GET("/users") { ok().body(users()) }
-        GET("/user/{id}") { ok().body(users(it.pathVariable("id").toLong())) }
-        PUT("/user") { ok().body(addUser(it.bodyToFlux(User::class.java))) }
-        DELETE("/user/{id}") { ok().body(deleteUser(it.pathVariable("id").toLong())) }
+        GET("/users") {
+            ok().body(users())
+        }
+        GET("/user/{id}") {
+            ok().body(users(it.pathVariable("id").toLong()))
+        }
+        PUT("/user") {
+            ok().body(addUser(it.bodyToFlux(User::class.java)))
+        }
+        DELETE("/user/{id}") {
+            ok().body(deleteUser(it.pathVariable("id").toLong()))
+        }
     }
 
     open fun users(): Flux<UserResponse> {

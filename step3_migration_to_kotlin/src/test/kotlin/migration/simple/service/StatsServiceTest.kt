@@ -14,8 +14,7 @@ import java.util.*
 class StatsServiceTest {
 
     @Test
-    @DisplayName("stats service should return right data")
-    fun statsServiceShouldReturnRightData() {
+    fun `stats service should return right data`() {
         val userRepositoryMock = mock<UserRepository>()
 
         val youngestUser = User(1L, "UserName1", "Sr1", 21)

@@ -8,11 +8,12 @@ import migration.simple.repository.UserRepository
 import migration.simple.service.StatsService
 import migration.simple.view.MustacheResourceTemplateLoader
 import migration.simple.view.MustacheViewResolver
+import org.springframework.context.support.BeanDefinitionDsl
 import org.springframework.context.support.beans
 import org.springframework.web.reactive.function.server.HandlerStrategies
 import org.springframework.web.reactive.function.server.RouterFunctions
 
-fun beans() = beans {
+fun beans(): BeanDefinitionDsl = beans {
     bean<DBConfiguration>()
     bean<DBConfiguration.DbConfig>()
 
