@@ -11,36 +11,42 @@ import migration.simple.responses.DeleteResponse
 import migration.simple.responses.UserAddResponse
 import migration.simple.responses.UserResponse
 import migration.simple.types.User
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.*
 import org.springframework.web.reactive.function.client.WebClient
 
 @DisplayName("UserController test")
 class UserControllerTest {
-    private val userRepositoryMock = mock<UserRepository>()
-
-    private val port = 8181
-    private val configuration = beans().apply {
-        bean { userRepositoryMock }
-    }
-    private var application = Application(port, configuration)
-
-    private lateinit var client: WebClient
-
     private val objectMapper: ObjectMapper = ObjectMapper()
+
+    companion object {
+        private val userRepositoryMock = mock<UserRepository>()
+
+        private val port = 8181
+        private val configuration = beans().apply {
+            bean { userRepositoryMock }
+        }
+
+        private var application = Application(port, configuration)
+
+        private lateinit var client: WebClient
+
+        @BeforeAll
+        @JvmStatic
+        fun beforeAll() {
+            application.start()
+            client = WebClient.create("http://localhost:$port")
+        }
+
+        @AfterAll
+        @JvmStatic
+        fun afterAll() {
+            application.stop()
+        }
+    }
 
     @BeforeEach
     fun before() {
         reset(userRepositoryMock)
-        application.start()
-        client = WebClient.create("http://localhost:$port")
-    }
-
-    @AfterEach
-    fun after() {
-        application.stop()
     }
 
     @Test
@@ -50,7 +56,7 @@ class UserControllerTest {
                 User(2L, "name2", "surname2", 30)
         )
 
-        whenever(this.userRepositoryMock.findAllUsers()).thenReturn(users)
+        whenever(userRepositoryMock.findAllUsers()).thenReturn(users)
         val expectedResponse = UserResponse(true, "return users", users)
 
         client.get()
@@ -63,8 +69,8 @@ class UserControllerTest {
     @Test
     fun `user should be return correctly`() {
         val user = User(1L, "name1", "surname1", 25)
-        whenever(this.userRepositoryMock.findUser(1L)).thenReturn(user)
-        whenever(this.userRepositoryMock.findUser(2L)).thenReturn(null)
+        whenever(userRepositoryMock.findUser(1L)).thenReturn(user)
+        whenever(userRepositoryMock.findUser(2L)).thenReturn(null)
 
         val expectedResponse = UserResponse(true, "find user with requested id", listOf(user))
 
