@@ -13,10 +13,7 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.web.reactive.function.client.WebClient
-import org.springframework.web.reactive.function.client.bodyToFlux
-import reactor.test.test
 
 @DisplayName("StatsController test")
 open class StatsControllerTest {
@@ -55,10 +52,7 @@ open class StatsControllerTest {
 
         client.get()
                 .uri("/stats")
-                .accept(APPLICATION_JSON)
-                .retrieve()
-                .bodyToFlux<StatsResponse>()
-                .test()
+                .retrieveResultForTest<StatsResponse>()
                 .expectNextMatches { it == expectedResponse }
                 .verifyComplete()
 

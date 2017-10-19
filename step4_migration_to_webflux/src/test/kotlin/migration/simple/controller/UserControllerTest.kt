@@ -15,12 +15,7 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import org.springframework.http.HttpHeaders
-import org.springframework.http.MediaType
-import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.reactive.function.client.WebClient
-import org.springframework.web.reactive.function.client.bodyToFlux
-import reactor.test.test
 
 @DisplayName("UserController test")
 class UserControllerTest {
@@ -60,10 +55,7 @@ class UserControllerTest {
 
         client.get()
                 .uri("/users")
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .bodyToFlux<UserResponse>()
-                .test()
+                .retrieveResultForTest<UserResponse>()
                 .expectNextMatches { it == expectedResponse }
                 .verifyComplete()
     }
@@ -78,10 +70,7 @@ class UserControllerTest {
 
         client.get()
                 .uri("/user/{id}", 1)
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .bodyToFlux<UserResponse>()
-                .test()
+                .retrieveResultForTest<UserResponse>()
                 .expectNextMatches { it == expectedResponse }
                 .verifyComplete()
 
@@ -89,10 +78,7 @@ class UserControllerTest {
 
         client.get()
                 .uri("/user/{id}", 2)
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .bodyToFlux<UserResponse>()
-                .test()
+                .retrieveResultForTest<UserResponse>()
                 .expectNextMatches { it == expectedMissedResponse }
                 .verifyComplete()
     }
@@ -110,12 +96,8 @@ class UserControllerTest {
 
         client.put()
                 .uri("/user")
-                .body(BodyInserters.fromObject(request))
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .bodyToFlux<UserAddResponse>()
-                .test()
+                .postBody(request)
+                .retrieveResultForTest<UserAddResponse>()
                 .expectNextMatches { it == expectedResponse }
                 .verifyComplete()
 
@@ -124,12 +106,8 @@ class UserControllerTest {
 
         client.put()
                 .uri("/user")
-                .body(BodyInserters.fromObject(errorRequest))
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .bodyToFlux<UserAddResponse>()
-                .test()
+                .postBody(errorRequest)
+                .retrieveResultForTest<UserAddResponse>()
                 .expectNextMatches { it == expectedErrorResponse }
                 .verifyComplete()
     }
@@ -143,10 +121,7 @@ class UserControllerTest {
 
         client.delete()
                 .uri("/user/{id}", 1L)
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .bodyToFlux<DeleteResponse>()
-                .test()
+                .retrieveResultForTest<DeleteResponse>()
                 .expectNextMatches { it == expectedResponse }
                 .verifyComplete()
 
@@ -154,11 +129,10 @@ class UserControllerTest {
 
         client.delete()
                 .uri("/user/{id}", 2L)
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .bodyToFlux<DeleteResponse>()
-                .test()
+                .retrieveResultForTest<DeleteResponse>()
                 .expectNextMatches { it == expectedErrorResponse }
                 .verifyComplete()
     }
+
+
 }
