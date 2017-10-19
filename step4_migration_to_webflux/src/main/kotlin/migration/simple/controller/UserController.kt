@@ -8,41 +8,41 @@ import migration.simple.types.User
 import org.springframework.web.reactive.function.server.RouterFunctionDsl
 import org.springframework.web.reactive.function.server.ServerResponse.ok
 import org.springframework.web.reactive.function.server.body
-import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 
 open class UserController(private val userRepository: UserRepository) {
     fun nest(): RouterFunctionDsl.() -> Unit = {
-        GET("/users") {
+        GET("/user") {
             ok().body(users())
         }
         GET("/user/{id}") {
-            ok().body(users(it.pathVariable("id").toLong()))
+            ok().body(user(it.pathVariable("id").toLong()))
         }
         PUT("/user") {
-            ok().body(addUser(it.bodyToFlux(User::class.java)))
+            ok().body(addUser(it.bodyToMono(User::class.java)))
         }
         DELETE("/user/{id}") {
             ok().body(deleteUser(it.pathVariable("id").toLong()))
         }
     }
 
-    open fun users(): Flux<UserResponse> {
+    open fun users(): Mono<UserResponse> {
         val users = userRepository.findAllUsers()
 
-        return Flux.just(UserResponse(true, "return users", users))
+        return Mono.just(UserResponse(true, "return users", users))
     }
 
-    open fun users(userId: Long): Flux<UserResponse> {
+    open fun user(userId: Long): Mono<UserResponse> {
         val user = userRepository.findUser(userId)
 
         val response = user
                 ?.let { UserResponse(true, "find user with requested id", listOf(it)) }
                 ?: UserResponse(false, "user not found", emptyList())
 
-        return Flux.just(response)
+        return Mono.just(response)
     }
 
-    open fun addUser(user: Flux<User>): Flux<UserAddResponse> = user.map {
+    open fun addUser(user: Mono<User>): Mono<UserAddResponse> = user.map {
         val addIndex = userRepository.addUser(it)
 
         addIndex
@@ -50,7 +50,7 @@ open class UserController(private val userRepository: UserRepository) {
                 ?: UserAddResponse(false, "user not added", -1L)
     }
 
-    open fun deleteUser(id: Long): Flux<DeleteResponse> {
+    open fun deleteUser(id: Long): Mono<DeleteResponse> {
         val status = userRepository.deleteUser(id)
 
         val result = if (status) {
@@ -59,6 +59,6 @@ open class UserController(private val userRepository: UserRepository) {
             DeleteResponse(false, "user not been deleted")
         }
 
-        return Flux.just(result)
+        return Mono.just(result)
     }
 }

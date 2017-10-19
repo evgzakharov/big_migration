@@ -1,6 +1,5 @@
 package migration.simple.controller
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.reset
 import com.nhaarman.mockito_kotlin.whenever
@@ -11,42 +10,31 @@ import migration.simple.responses.DeleteResponse
 import migration.simple.responses.UserAddResponse
 import migration.simple.responses.UserResponse
 import migration.simple.types.User
-import org.junit.jupiter.api.*
-import org.springframework.web.reactive.function.client.WebClient
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
 
 @DisplayName("UserController test")
 class UserControllerTest {
-    private val objectMapper: ObjectMapper = ObjectMapper()
+    private val userRepositoryMock = mock<UserRepository>()
 
-    companion object {
-        private val userRepositoryMock = mock<UserRepository>()
-
-        private val port = 8181
-        private val configuration = beans().apply {
-            bean { userRepositoryMock }
-        }
-
-        private var application = Application(port, configuration)
-
-        private lateinit var client: WebClient
-
-        @BeforeAll
-        @JvmStatic
-        fun beforeAll() {
-            application.start()
-            client = WebClient.create("http://localhost:$port")
-        }
-
-        @AfterAll
-        @JvmStatic
-        fun afterAll() {
-            application.stop()
-        }
+    private val port = 8181
+    private val configuration = beans().apply {
+        bean { userRepositoryMock }
     }
+    private var application = Application(port, configuration)
 
     @BeforeEach
     fun before() {
         reset(userRepositoryMock)
+        application.start()
+    }
+
+    @AfterEach
+    fun after() {
+        application.stop()
     }
 
     @Test
@@ -56,37 +44,29 @@ class UserControllerTest {
                 User(2L, "name2", "surname2", 30)
         )
 
-        whenever(userRepositoryMock.findAllUsers()).thenReturn(users)
+        whenever(this.userRepositoryMock.findAllUsers()).thenReturn(users)
         val expectedResponse = UserResponse(true, "return users", users)
 
-        client.get()
-                .uri("/users")
-                .retrieveResultForTest<UserResponse>()
-                .expectNextMatches { it == expectedResponse }
-                .verifyComplete()
+        val response: UserResponse = "http://localhost:$port/user".GET()
+
+        assertEquals(expectedResponse, response, "invalid response")
     }
 
     @Test
     fun `user should be return correctly`() {
         val user = User(1L, "name1", "surname1", 25)
-        whenever(userRepositoryMock.findUser(1L)).thenReturn(user)
-        whenever(userRepositoryMock.findUser(2L)).thenReturn(null)
+        whenever(this.userRepositoryMock.findUser(1L)).thenReturn(user)
+        whenever(this.userRepositoryMock.findUser(2L)).thenReturn(null)
 
         val expectedResponse = UserResponse(true, "find user with requested id", listOf(user))
+        val response: UserResponse = "http://localhost:$port/user/1".GET()
 
-        client.get()
-                .uri("/user/{id}", 1)
-                .retrieveResultForTest<UserResponse>()
-                .expectNextMatches { it == expectedResponse }
-                .verifyComplete()
+        assertEquals(expectedResponse, response, "not find exists user")
 
         val expectedMissedResponse = UserResponse(false, "user not found", emptyList())
+        val missingResponse: UserResponse = "http://localhost:$port/user/2".GET()
 
-        client.get()
-                .uri("/user/{id}", 2)
-                .retrieveResultForTest<UserResponse>()
-                .expectNextMatches { it == expectedMissedResponse }
-                .verifyComplete()
+        assertEquals(expectedMissedResponse, missingResponse, "invalid user response")
     }
 
     @Test
@@ -97,25 +77,15 @@ class UserControllerTest {
         whenever(userRepositoryMock.addUser(newUser1)).thenReturn(15L)
         whenever(userRepositoryMock.addUser(newUser2)).thenReturn(null)
 
-        val request = objectMapper.writeValueAsString(newUser1)
         val expectedResponse = UserAddResponse(true, "user add successfully", 15L)
+        val response: UserAddResponse = "http://localhost:$port/user".PUT(newUser1)
 
-        client.put()
-                .uri("/user")
-                .postBody(request)
-                .retrieveResultForTest<UserAddResponse>()
-                .expectNextMatches { it == expectedResponse }
-                .verifyComplete()
+        assertEquals(expectedResponse, response, "invalid add response")
 
-        val errorRequest = objectMapper.writeValueAsString(newUser2)
         val expectedErrorResponse = UserAddResponse(false, "user not added", -1L)
+        val errorResponse: UserAddResponse = "http://localhost:$port/user".PUT(newUser2)
 
-        client.put()
-                .uri("/user")
-                .postBody(errorRequest)
-                .retrieveResultForTest<UserAddResponse>()
-                .expectNextMatches { it == expectedErrorResponse }
-                .verifyComplete()
+        assertEquals(expectedErrorResponse, errorResponse, "invalid add response")
     }
 
     @Test
@@ -124,21 +94,14 @@ class UserControllerTest {
         whenever(userRepositoryMock.deleteUser(2L)).thenReturn(false)
 
         val expectedResponse = DeleteResponse(true, "user has been deleted")
+        val response: DeleteResponse = "http://localhost:$port/user/1".DELETE()
 
-        client.delete()
-                .uri("/user/{id}", 1L)
-                .retrieveResultForTest<DeleteResponse>()
-                .expectNextMatches { it == expectedResponse }
-                .verifyComplete()
+        assertEquals(expectedResponse, response, "invalid response")
 
         val expectedErrorResponse = DeleteResponse(false, "user not been deleted")
+        val errorResponse: DeleteResponse = "http://localhost:$port/user/2".DELETE()
 
-        client.delete()
-                .uri("/user/{id}", 2L)
-                .retrieveResultForTest<DeleteResponse>()
-                .expectNextMatches { it == expectedErrorResponse }
-                .verifyComplete()
+        assertEquals(expectedErrorResponse, errorResponse, "invalid response")
     }
-
 
 }

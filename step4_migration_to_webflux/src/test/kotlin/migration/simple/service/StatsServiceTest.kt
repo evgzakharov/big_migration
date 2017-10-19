@@ -5,7 +5,7 @@ import com.nhaarman.mockito_kotlin.whenever
 import migration.simple.repository.UserRepository
 import migration.simple.types.Stats
 import migration.simple.types.User
-import org.junit.Assert
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import java.util.*
@@ -37,7 +37,7 @@ class StatsServiceTest {
                 youngestUser
         )
 
-        Assert.assertEquals("invalid stats", expectedStats, actualStats)
+        assertEquals(expectedStats, actualStats, "invalid stats")
     }
 }
 

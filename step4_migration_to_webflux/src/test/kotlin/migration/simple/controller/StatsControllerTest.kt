@@ -10,6 +10,7 @@ import migration.simple.service.StatsService
 import migration.simple.types.Stats
 import migration.simple.types.User
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -49,13 +50,8 @@ open class StatsControllerTest {
         whenever(statsServiceMock.getStats()).thenReturn(expectedStats)
 
         val expectedResponse = StatsResponse(true, "user stats", expectedStats)
+        val response: StatsResponse = "http://localhost:$port/stats".GET()
 
-        client.get()
-                .uri("/stats")
-                .retrieveResultForTest<StatsResponse>()
-                .expectNextMatches { it == expectedResponse }
-                .verifyComplete()
-
-        application.stop()
+        assertEquals(expectedResponse, response, "invalid response")
     }
 }

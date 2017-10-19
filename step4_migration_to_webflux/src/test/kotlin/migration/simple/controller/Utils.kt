@@ -1,17 +1,57 @@
 package migration.simple.controller
 
-import org.springframework.http.HttpHeaders
-import org.springframework.http.MediaType
-import org.springframework.web.reactive.function.BodyInserters
-import org.springframework.web.reactive.function.client.WebClient
-import reactor.test.StepVerifier
-import reactor.test.test
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
+import okhttp3.*
 
-inline fun <reified T> WebClient.RequestHeadersSpec<*>.retrieveResultForTest(): StepVerifier.FirstStep<T> = this
-        .accept(MediaType.APPLICATION_JSON)
-        .retrieve()
-        .bodyToFlux(T::class.java)
-        .test()
+var client = OkHttpClient()
 
-fun WebClient.RequestBodySpec.postBody(body: Any): WebClient.RequestHeadersSpec<*> = this.body(BodyInserters.fromObject(body))
-        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+val JSON = MediaType.parse("application/json; charset=utf-8")
+
+val mapper: ObjectMapper = ObjectMapper()
+        .registerKotlinModule()
+
+inline fun <reified T> String.GET(): T {
+    val request = Request.Builder()
+            .url(this)
+            .build()
+
+    return client.newCall(request).executeAndGet(T::class.java)
+}
+
+inline fun <reified T> String.PUT(data: Any): T {
+    val body = RequestBody.create(JSON, mapper.writeValueAsString(data))
+    val request = Request.Builder()
+            .url(this)
+            .put(body)
+            .build()
+
+    return client.newCall(request).executeAndGet(T::class.java)
+}
+
+inline fun <reified T> String.POST(data: Any): T {
+    val body = RequestBody.create(JSON, mapper.writeValueAsString(data))
+    val request = Request.Builder()
+            .url(this)
+            .post(body)
+            .build()
+
+    return client.newCall(request).executeAndGet(T::class.java)
+}
+
+inline fun <reified T> String.DELETE(): T {
+    val request = Request.Builder()
+            .url(this)
+            .delete()
+            .build()
+
+    return client.newCall(request).executeAndGet(T::class.java)
+}
+
+fun <T> Call.executeAndGet(clazz: Class<T>): T {
+    execute().use { response ->
+        return mapper.readValue(response.body()!!.string(), clazz)
+    }
+
+
+}

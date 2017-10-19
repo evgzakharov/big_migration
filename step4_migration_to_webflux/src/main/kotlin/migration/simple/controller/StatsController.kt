@@ -6,16 +6,16 @@ import migration.simple.utils.Controller
 import org.springframework.web.reactive.function.server.RouterFunctionDsl
 import org.springframework.web.reactive.function.server.ServerResponse.ok
 import org.springframework.web.reactive.function.server.body
-import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 
 open class StatsController(private val statsService: StatsService) : Controller {
     override fun nest(): RouterFunctionDsl.() -> Unit = {
         GET("/stats") { ok().body(stats()) }
     }
 
-    open fun stats(): Flux<StatsResponse> {
+    open fun stats(): Mono<StatsResponse> {
         val stats = statsService.getStats()
 
-        return Flux.just(StatsResponse(true, "user stats", stats))
+        return Mono.just(StatsResponse(true, "user stats", stats))
     }
 }
