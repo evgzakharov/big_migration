@@ -1,7 +1,6 @@
 package migration.simple.controller
 
 import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.reset
 import com.nhaarman.mockito_kotlin.whenever
 import migration.simple.Application
 import migration.simple.beans
@@ -15,20 +14,25 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.springframework.context.support.BeanDefinitionDsl
 
 @DisplayName("UserController test")
 class UserControllerTest {
-    private val userRepositoryMock = mock<UserRepository>()
+    private var port = 8181
 
-    private val port = 8181
-    private val configuration = beans().apply {
-        bean { userRepositoryMock }
-    }
-    private var application = Application(port, configuration)
+    private lateinit var userRepositoryMock: UserRepository
+
+    private lateinit var configuration: BeanDefinitionDsl
+
+    private lateinit var application: Application
 
     @BeforeEach
     fun before() {
-        reset(userRepositoryMock)
+        userRepositoryMock = mock()
+        configuration = beans().apply {
+            bean { userRepositoryMock }
+        }
+        application = Application(port, configuration)
         application.start()
     }
 
@@ -44,7 +48,7 @@ class UserControllerTest {
                 User(2L, "name2", "surname2", 30)
         )
 
-        whenever(this.userRepositoryMock.findAllUsers()).thenReturn(users)
+        whenever(userRepositoryMock.findAllUsers()).thenReturn(users)
         val expectedResponse = UserResponse(true, "return users", users)
 
         val response: UserResponse = "http://localhost:$port/user".GET()
@@ -55,8 +59,8 @@ class UserControllerTest {
     @Test
     fun `user should be return correctly`() {
         val user = User(1L, "name1", "surname1", 25)
-        whenever(this.userRepositoryMock.findUser(1L)).thenReturn(user)
-        whenever(this.userRepositoryMock.findUser(2L)).thenReturn(null)
+        whenever(userRepositoryMock.findUser(1L)).thenReturn(user)
+        whenever(userRepositoryMock.findUser(2L)).thenReturn(null)
 
         val expectedResponse = UserResponse(true, "find user with requested id", listOf(user))
         val response: UserResponse = "http://localhost:$port/user/1".GET()

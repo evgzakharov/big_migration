@@ -15,20 +15,19 @@ import org.springframework.web.reactive.function.server.RouterFunctions
 
 fun beans(): BeanDefinitionDsl = beans {
     bean<DBConfiguration>()
-    bean<DBConfiguration.DbConfig>()
 
     //controllers
-    bean { StatsController(ref()) }
-    bean { UserController(ref()) }
+    bean<StatsController>()
+    bean<UserController>()
 
     //repository
-    bean { UserRepository(ref()) }
+    bean<UserRepository>()
 
     //services
-    bean { StatsService(ref()) }
+    bean<StatsService>()
 
     //routes
-    bean { Routes(ref(), ref()) }
+    bean<Routes>()
     bean("webHandler") {
         RouterFunctions.toWebHandler(ref<Routes>().router(), HandlerStrategies.builder().viewResolver(ref()).build())
     }
