@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono
 
 open class UserController(private val userRepository: UserRepository) {
     fun nest(): RouterFunctionDsl.() -> Unit = {
-        GET("/user") {
+        GET("/users") {
             ok().body(users())
         }
         GET("/user/{id}") {

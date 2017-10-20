@@ -13,8 +13,9 @@ import org.springframework.context.support.beans
 import org.springframework.web.reactive.function.server.HandlerStrategies
 import org.springframework.web.reactive.function.server.RouterFunctions
 
-fun beans(): BeanDefinitionDsl = beans {
+fun beansConfiguration(beanConfig: BeanDefinitionDsl.() -> Unit = {}): BeanDefinitionDsl = beans {
     bean<DBConfiguration>()
+    bean<DBConfiguration.DbConfig>()
 
     //controllers
     bean<StatsController>()
@@ -42,5 +43,7 @@ fun beans(): BeanDefinitionDsl = beans {
             setSuffix(suffix)
         }
     }
+
+    beanConfig()
 }
 

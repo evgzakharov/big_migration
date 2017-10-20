@@ -3,6 +3,7 @@ version '1.0-SNAPSHOT'
 
 buildscript {
     ext {
+        springBootVersion = "2.0.0.M5"
         junitVersion = "5.0.1"
         kotlinVersion = "1.1.51"
     }
@@ -12,6 +13,7 @@ buildscript {
         maven { url = "http://repo.spring.io/milestone" }
     }
     dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath("org.junit.platform:junit-platform-gradle-plugin:1.0.1")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
     }
@@ -35,8 +37,10 @@ dependencies {
 
     compile("org.springframework:spring-webflux")
     compile("org.springframework:spring-context")
+    compile("org.springframework:spring-web")
 
-    compile("io.projectreactor.ipc:reactor-netty")
+//    compile("io.projectreactor.ipc:reactor-netty")
+    compile("io.undertow:undertow-core")
 
     compile("com.samskivert:jmustache")
 

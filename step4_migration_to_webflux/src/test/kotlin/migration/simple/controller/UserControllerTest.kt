@@ -3,7 +3,7 @@ package migration.simple.controller
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import migration.simple.Application
-import migration.simple.beans
+import migration.simple.beansConfiguration
 import migration.simple.repository.UserRepository
 import migration.simple.responses.DeleteResponse
 import migration.simple.responses.UserAddResponse
@@ -29,7 +29,8 @@ class UserControllerTest {
     @BeforeEach
     fun before() {
         userRepositoryMock = mock()
-        configuration = beans().apply {
+
+        configuration = beansConfiguration {
             bean { userRepositoryMock }
         }
         application = Application(port, configuration)
@@ -51,7 +52,7 @@ class UserControllerTest {
         whenever(userRepositoryMock.findAllUsers()).thenReturn(users)
         val expectedResponse = UserResponse(true, "return users", users)
 
-        val response: UserResponse = "http://localhost:$port/user".GET()
+        val response: UserResponse = "http://localhost:$port/users".GET()
 
         assertEquals(expectedResponse, response, "invalid response")
     }
@@ -107,5 +108,4 @@ class UserControllerTest {
 
         assertEquals(expectedErrorResponse, errorResponse, "invalid response")
     }
-
 }

@@ -1,39 +1,34 @@
 package migration.simple
 
+import io.undertow.Undertow
 import org.springframework.context.support.BeanDefinitionDsl
 import org.springframework.context.support.GenericApplicationContext
-import org.springframework.http.server.reactive.HttpHandler
-import org.springframework.http.server.reactive.ReactorHttpHandlerAdapter
+import org.springframework.http.server.reactive.UndertowHttpHandlerAdapter
 import org.springframework.web.server.adapter.WebHttpHandlerBuilder
-import reactor.ipc.netty.http.server.HttpServer
-import reactor.ipc.netty.tcp.BlockingNettyContext
 
-class Application(port: Int = 8080, beanDefinition: BeanDefinitionDsl = beans()) {
-    private val httpHandler: HttpHandler
-    private val server: HttpServer
-    private var nettyContext: BlockingNettyContext? = null
+class Application(port: Int = 8080, beanConfig: BeanDefinitionDsl = beansConfiguration()) {
+    private val server: Undertow
 
     init {
         val context = GenericApplicationContext().apply {
-            beanDefinition.initialize(this)
+            beanConfig.initialize(this)
             refresh()
         }
-        server = HttpServer.create(port)
-        httpHandler = WebHttpHandlerBuilder.applicationContext(context).build()
+        val handler = WebHttpHandlerBuilder.applicationContext(context).build()
+        val adapter = UndertowHttpHandlerAdapter(handler)
+        server = Undertow.builder().addHttpListener(port, "localhost").setHandler(adapter).build()
     }
 
     fun start() {
-        nettyContext = server.start(ReactorHttpHandlerAdapter(httpHandler))
+        server.start()
     }
 
     fun startAndAwait() {
-        server.startAndAwait(ReactorHttpHandlerAdapter(httpHandler)) {
-            nettyContext = it
-        }
+        server.start()
     }
 
     fun stop() {
-        nettyContext?.shutdown()
+        server.stop()
     }
 }
 

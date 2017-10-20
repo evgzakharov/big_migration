@@ -4,7 +4,7 @@ import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.reset
 import com.nhaarman.mockito_kotlin.whenever
 import migration.simple.Application
-import migration.simple.beans
+import migration.simple.beansConfiguration
 import migration.simple.responses.StatsResponse
 import migration.simple.service.StatsService
 import migration.simple.types.Stats
@@ -14,25 +14,21 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import org.springframework.web.reactive.function.client.WebClient
 
 @DisplayName("StatsController test")
 open class StatsControllerTest {
     private val statsServiceMock = mock<StatsService>()
 
     private val port = 8181
-    private val configuration = beans().apply {
+    private val configuration = beansConfiguration {
         bean { statsServiceMock }
     }
     private val application = Application(port, configuration)
-
-    private lateinit var client: WebClient
 
     @BeforeEach
     fun before() {
         reset(statsServiceMock)
         application.start()
-        client = WebClient.create("http://localhost:$port")
     }
 
     @AfterEach
