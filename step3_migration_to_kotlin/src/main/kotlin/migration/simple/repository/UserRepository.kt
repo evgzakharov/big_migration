@@ -3,7 +3,6 @@ package migration.simple.repository
 import migration.simple.config.DBConfiguration
 import migration.simple.types.User
 import org.springframework.stereotype.Repository
-import java.util.*
 
 @Repository
 open class UserRepository(dbConfig: DBConfiguration.DbConfig) {
@@ -21,7 +20,7 @@ open class UserRepository(dbConfig: DBConfiguration.DbConfig) {
     }
 
     open fun findAllUsers(): List<User> {
-        return ArrayList<User>(users)
+        return users.toList()
     }
 
     @Synchronized

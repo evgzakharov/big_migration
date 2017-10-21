@@ -2,7 +2,6 @@ package migration.simple.repository
 
 import migration.simple.config.DBConfiguration
 import migration.simple.types.User
-import java.util.*
 
 open class UserRepository(dbConfig: DBConfiguration.DbConfig) {
     private var index: Long = 3L
@@ -18,7 +17,7 @@ open class UserRepository(dbConfig: DBConfiguration.DbConfig) {
     }
 
     open fun findAllUsers(): List<User> {
-        return ArrayList<User>(users)
+        return users.toList()
     }
 
     @Synchronized
