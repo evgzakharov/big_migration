@@ -8,6 +8,9 @@ import migration.simple.repository.UserRepository
 import migration.simple.service.StatsService
 import migration.simple.view.MustacheResourceTemplateLoader
 import migration.simple.view.MustacheViewResolver
+import org.springframework.boot.context.properties.ConfigurationPropertiesBindingPostProcessor
+import org.springframework.context.annotation.CommonAnnotationBeanPostProcessor
+import org.springframework.context.annotation.ConfigurationClassPostProcessor
 import org.springframework.context.support.BeanDefinitionDsl
 import org.springframework.context.support.beans
 import org.springframework.web.reactive.function.server.HandlerStrategies
@@ -15,7 +18,6 @@ import org.springframework.web.reactive.function.server.RouterFunctions
 
 fun beansConfiguration(beanConfig: BeanDefinitionDsl.() -> Unit = {}): BeanDefinitionDsl = beans {
     bean<DBConfiguration>()
-    bean<DBConfiguration.DbConfig>()
 
     //controllers
     bean<StatsController>()
@@ -43,6 +45,10 @@ fun beansConfiguration(beanConfig: BeanDefinitionDsl.() -> Unit = {}): BeanDefin
             setSuffix(suffix)
         }
     }
+    //processors
+    bean<CommonAnnotationBeanPostProcessor>()
+    bean<ConfigurationClassPostProcessor>()
+    bean<ConfigurationPropertiesBindingPostProcessor>()
 
     beanConfig()
 }

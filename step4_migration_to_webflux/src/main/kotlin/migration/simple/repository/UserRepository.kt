@@ -5,7 +5,6 @@ import migration.simple.types.User
 import java.util.*
 
 open class UserRepository(dbConfig: DBConfiguration.DbConfig) {
-
     private var index: Long = 3L
 
     private val users = mutableListOf(

@@ -35,9 +35,9 @@ dependencies {
     compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion")
     compile("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
 
+    compile("org.springframework.boot:spring-boot-starter:$springBootVersion")
+
     compile("org.springframework:spring-webflux")
-    compile("org.springframework:spring-context")
-    compile("org.springframework:spring-web")
 
 //    compile("io.projectreactor.ipc:reactor-netty")
     compile("io.undertow:undertow-core")
