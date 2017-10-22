@@ -3,25 +3,26 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 group = "evgzakharov"
 version = "1.0-SNAPSHOT"
 
-plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.1.51"
-}
-
-val springBootVersion = "2.0.0.M5"
-val kotlinVersion = "1.1.51"
-val junitVersion = "5.0.1"
-
 buildscript {
+    val springBootVersion by extra { "2.0.0.M5" }
+    extra["junitVersion"] = "5.0.1"
+    extra["kotlinVersion"] = "1.1.51"
+
     repositories {
         jcenter()
         maven { setUrl("http://repo.spring.io/snapshot") }
         maven { setUrl("http://repo.spring.io/milestone") }
     }
+
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.0.M5")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
         classpath("org.junit.platform:junit-platform-gradle-plugin:1.0.1")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.51")
     }
+}
+
+plugins {
+    id("org.jetbrains.kotlin.jvm") version "1.1.51"
 }
 
 apply {
@@ -35,6 +36,10 @@ repositories {
     maven { setUrl("http://repo.spring.io/snapshot") }
     maven { setUrl("http://repo.spring.io/milestone") }
 }
+
+val springBootVersion: String by project.extra
+val junitVersion: String by project.extra
+val kotlinVersion: String by project.extra
 
 dependencies {
     compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion")
