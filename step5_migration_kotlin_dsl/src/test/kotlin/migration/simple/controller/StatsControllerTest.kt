@@ -1,0 +1,53 @@
+package migration.simple.controller
+
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.reset
+import com.nhaarman.mockito_kotlin.whenever
+import migration.simple.Application
+import migration.simple.beansConfiguration
+import migration.simple.responses.StatsResponse
+import migration.simple.service.StatsService
+import migration.simple.types.Stats
+import migration.simple.types.User
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
+
+@DisplayName("StatsController test")
+open class StatsControllerTest {
+    private val statsServiceMock = mock<StatsService>()
+
+    private val port = 8181
+    private val configuration = beansConfiguration {
+        bean { statsServiceMock }
+    }
+    private val application = Application(port, configuration)
+
+    @BeforeEach
+    fun before() {
+        reset(statsServiceMock)
+        application.start()
+    }
+
+    @AfterEach
+    fun after() {
+        application.stop()
+    }
+
+    @Test
+    fun `stats controller should return valid result`() {
+        val expectedStats = Stats(
+                2,
+                User(1L, "name1", "surname1", 25),
+                User(2L, "name2", "surname2", 30)
+        )
+        whenever(statsServiceMock.getStats()).thenReturn(expectedStats)
+
+        val expectedResponse = StatsResponse(true, "user stats", expectedStats)
+        val response: StatsResponse = "http://localhost:$port/stats".GET()
+
+        assertEquals(expectedResponse, response, "invalid response")
+    }
+}
