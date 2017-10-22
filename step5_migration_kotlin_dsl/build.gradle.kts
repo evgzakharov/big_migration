@@ -1,34 +1,39 @@
-group 'evgzakharov'
-version '1.0-SNAPSHOT'
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+group = "evgzakharov"
+version = "1.0-SNAPSHOT"
+
+plugins {
+    id("org.jetbrains.kotlin.jvm") version "1.1.51"
+}
+
+val springBootVersion = "2.0.0.M5"
+val kotlinVersion = "1.1.51"
+val junitVersion = "5.0.1"
 
 buildscript {
-    ext {
-        springBootVersion = "2.0.0.M5"
-        junitVersion = "5.0.1"
-        kotlinVersion = "1.1.51"
-    }
     repositories {
         jcenter()
-        maven { url = "http://repo.spring.io/snapshot" }
-        maven { url = "http://repo.spring.io/milestone" }
+        maven { setUrl("http://repo.spring.io/snapshot") }
+        maven { setUrl("http://repo.spring.io/milestone") }
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.0.M5")
         classpath("org.junit.platform:junit-platform-gradle-plugin:1.0.1")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.51")
     }
 }
 
-apply plugin: "org.springframework.boot"
-apply plugin: "org.junit.platform.gradle.plugin"
-apply plugin: 'kotlin'
-apply plugin: "io.spring.dependency-management"
-
-sourceCompatibility = 1.8
+apply {
+    plugin("org.springframework.boot")
+    plugin("org.junit.platform.gradle.plugin")
+    plugin("io.spring.dependency-management")
+}
 
 repositories {
-    maven { url = "http://repo.spring.io/snapshot" }
-    maven { url = "http://repo.spring.io/milestone" }
+    jcenter()
+    maven { setUrl("http://repo.spring.io/snapshot") }
+    maven { setUrl("http://repo.spring.io/milestone") }
 }
 
 dependencies {
@@ -39,7 +44,6 @@ dependencies {
 
     compile("org.springframework:spring-webflux")
 
-//    compile("io.projectreactor.ipc:reactor-netty")
     compile("io.undertow:undertow-core")
 
     compile("com.samskivert:jmustache")
@@ -57,10 +61,8 @@ dependencies {
     testCompile("io.projectreactor:reactor-test")
 }
 
-compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
-
-compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+tasks.withType<KotlinCompile> {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }

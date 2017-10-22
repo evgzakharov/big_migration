@@ -27,6 +27,7 @@ apply plugin: "io.spring.dependency-management"
 sourceCompatibility = 1.8
 
 repositories {
+    jcenter()
     maven { url = "http://repo.spring.io/snapshot" }
     maven { url = "http://repo.spring.io/milestone" }
 }
@@ -37,9 +38,8 @@ dependencies {
 
     compile("org.springframework.boot:spring-boot-starter:$springBootVersion")
 
-    compile("org.springframework:spring-webflux")
+    compile("org.springframework:spring-webflux:5.0.0.RELEASE")
 
-//    compile("io.projectreactor.ipc:reactor-netty")
     compile("io.undertow:undertow-core")
 
     compile("com.samskivert:jmustache")
