@@ -4,7 +4,6 @@ import migration.simple.repository.UserRepository
 import migration.simple.types.Stats
 
 open class StatsService(private val userRepository: UserRepository) {
-
     open fun getStats(): Stats {
         val allUsers = userRepository.findAllUsers()
 

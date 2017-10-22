@@ -8,22 +8,26 @@ import org.springframework.core.io.ClassPathResource
 import org.springframework.http.server.reactive.UndertowHttpHandlerAdapter
 import org.springframework.web.server.adapter.WebHttpHandlerBuilder
 
-class Application(port: Int = 8080, beanConfig: BeanDefinitionDsl = beansConfiguration()) {
+class Application(port: Int? = null, beanConfig: BeanDefinitionDsl = beansConfiguration()) {
     private val server: Undertow
 
     init {
         val context = GenericApplicationContext().apply {
             beanConfig.initialize(this)
-
             loadConfig()
 
             refresh()
         }
+
         val adapter = WebHttpHandlerBuilder.applicationContext(context).build()
                 .run { UndertowHttpHandlerAdapter(this) }
 
+        val startupPort = port
+                ?: context.environment.getProperty("server.port")?.toInt()
+                ?: DEFAULT_PORT
+
         server = Undertow.builder()
-                .addHttpListener(port, "localhost")
+                .addHttpListener(startupPort, "localhost")
                 .setHandler(adapter)
                 .build()
     }
@@ -41,6 +45,10 @@ class Application(port: Int = 8080, beanConfig: BeanDefinitionDsl = beansConfigu
         val sourceLoader = YamlPropertySourceLoader()
         val properties = sourceLoader.load("main config", resource, null)
         environment.propertySources.addFirst(properties)
+    }
+
+    companion object {
+        private val DEFAULT_PORT = 8080
     }
 }
 
