@@ -12,7 +12,7 @@ Convert code to Kotlin, mostly by Intellij Idea and after clean code to Kotlin s
 
 ## Step 4
 Convert code to webflux. For base project take [this](https://github.com/sdeleuze/spring-kotlin-functional).
-Have many problems with enable annotation processing and loading a configuration. [Description](https://stackoverflow.com/questions/46834767/how-to-load-config-in-spring-webflux-without-spring-boot) of founded solution.  
+Have many problems with enable annotation processing and loading a configuration. Description of problem with config loading and founded solution can be found [hear](https://stackoverflow.com/questions/46834767/how-to-load-config-in-spring-webflux-without-spring-boot).  
 
 ## Step 5
 Convert Gradle Dsl to Kotlin Dsl. For now worked only if moving Kotlin plugin to new Gradle plugin syntax. 
