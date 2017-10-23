@@ -11,7 +11,7 @@ Migrate to Spring Boot 2 and Junit 5. Main difference appeare in tests and depen
 Convert code to Kotlin, mostly by Intellij Idea and after clean code to Kotlin style. For mocking add [mockito-kotlin library](https://github.com/nhaarman/mockito-kotlin)
 
 ## Step 4
-Convert code to webflux. For base project take [this](https://github.com/sdeleuze/spring-kotlin-functional) 
+Convert code to webflux. For base project take [this](https://github.com/sdeleuze/spring-kotlin-functional).
 Have many problems with enable annotation processing and loading a configuration. Solution can be founded [here](https://stackoverflow.com/questions/46834767/how-to-load-config-in-spring-webflux-without-spring-boot)
 
 ## Step 5
