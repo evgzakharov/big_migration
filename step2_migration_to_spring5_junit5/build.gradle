@@ -8,7 +8,6 @@ buildscript {
     }
     repositories {
         jcenter()
-        maven { url = "http://repo.spring.io/snapshot" }
         maven { url = "http://repo.spring.io/milestone" }
     }
     dependencies {
@@ -24,7 +23,6 @@ apply plugin: "org.junit.platform.gradle.plugin"
 sourceCompatibility = 1.8
 
 repositories {
-    maven { url = "http://repo.spring.io/snapshot" }
     maven { url = "http://repo.spring.io/milestone" }
 }
 

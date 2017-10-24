@@ -10,7 +10,6 @@ buildscript {
 
     repositories {
         jcenter()
-        maven { setUrl("http://repo.spring.io/snapshot") }
         maven { setUrl("http://repo.spring.io/milestone") }
     }
 
@@ -33,7 +32,6 @@ apply {
 
 repositories {
     jcenter()
-    maven { setUrl("http://repo.spring.io/snapshot") }
     maven { setUrl("http://repo.spring.io/milestone") }
 }
 

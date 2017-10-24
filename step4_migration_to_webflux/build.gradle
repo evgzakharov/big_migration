@@ -9,7 +9,6 @@ buildscript {
     }
     repositories {
         jcenter()
-        maven { url = "http://repo.spring.io/snapshot" }
         maven { url = "http://repo.spring.io/milestone" }
     }
     dependencies {
@@ -28,7 +27,6 @@ sourceCompatibility = 1.8
 
 repositories {
     jcenter()
-    maven { url = "http://repo.spring.io/snapshot" }
     maven { url = "http://repo.spring.io/milestone" }
 }
 
