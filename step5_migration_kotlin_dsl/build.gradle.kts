@@ -59,7 +59,6 @@ dependencies {
 
     testCompile("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testRuntime("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
-    testCompile("org.junit.platform:junit-platform-runner:1.0.1")
 }
 
 tasks.withType<KotlinCompile> {
