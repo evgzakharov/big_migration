@@ -42,7 +42,7 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("all users should be return correctly")
-    public void allUsersShouldBeReturnCorrectly() {
+    public void getTest() {
         List<User> users = Arrays.asList(
                 new User(1L, "name1", "surname1", 25),
                 new User(2L, "name2", "surname2", 30)
@@ -58,7 +58,7 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("user should be return correctly")
-    public void userShouldBeReturnCorrectly() {
+    public void getUserTest() {
         User user = new User(1L, "name1", "surname1", 25);
         when(this.userRepositoryMock.findUser(1L)).thenReturn(Optional.of(user));
         when(this.userRepositoryMock.findUser(2L)).thenReturn(Optional.empty());
@@ -74,7 +74,7 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("user should be added correctly")
-    public void userShouldBeAddedCorrectly() throws JsonProcessingException {
+    public void putUserTest() throws JsonProcessingException {
         User newUser1 = new User(null, "name", "surname", 15);
         User newUser2 = new User(null, "name2", "surname2", 18);
 
@@ -96,7 +96,7 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("user should be deleted correctly")
-    public void userShouldBeDeletedCorrectly() {
+    public void deleteUserTest() {
         when(userRepositoryMock.deleteUser(1L)).thenReturn(true);
         when(userRepositoryMock.deleteUser(2L)).thenReturn(false);
 

@@ -12,14 +12,12 @@ import java.util.Arrays;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-//for ide which not support JUnit5
-//@RunWith(JUnitPlatform.class)
 @DisplayName("Service test with mockito")
 public class StatsServiceTest {
 
     @Test
     @DisplayName("stats service should return right data")
-    public void statsServiceShouldReturnRightData() {
+    public void test() {
         UserRepository userRepositoryMock = mock(UserRepository.class);
 
         User youngestUser = new User(1L, "UserName1", "Sr1", 21);

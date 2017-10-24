@@ -14,7 +14,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -29,7 +29,7 @@ public class StatsControllerTest {
 
     @Test
     @DisplayName("stats controller should return valid result")
-    public void statsControllerShouldReturnValidResult() {
+    public void test() {
         Stats expectedStats = new Stats(
                 2,
                 new User(1L, "name1", "surname1", 25),
