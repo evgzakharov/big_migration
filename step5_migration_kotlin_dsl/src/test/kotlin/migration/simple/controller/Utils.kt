@@ -52,6 +52,4 @@ fun <T> Call.executeAndGet(clazz: Class<T>): T {
     execute().use { response ->
         return mapper.readValue(response.body()!!.string(), clazz)
     }
-
-
 }

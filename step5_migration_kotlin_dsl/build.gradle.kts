@@ -44,13 +44,10 @@ dependencies {
     compile("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
 
     compile("org.springframework.boot:spring-boot-starter:$springBootVersion")
-
     compile("org.springframework:spring-webflux")
 
     compile("io.undertow:undertow-core")
-
     compile("com.samskivert:jmustache")
-
     compile("com.fasterxml.jackson.module:jackson-module-kotlin")
 
     testCompile("com.nhaarman:mockito-kotlin-kt1.1:1.5.0")
@@ -67,3 +64,4 @@ tasks.withType<KotlinCompile> {
         freeCompilerArgs = listOf("-Xjsr305=strict")
     }
 }
+
