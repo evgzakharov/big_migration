@@ -15,9 +15,7 @@ open class DBConfiguration {
     }
 
     private fun unSecure(password: String): String {
-        val secretIndex = password.indexOf("Secret")
-
-        return password.substring(0, secretIndex)
+        return password.substringBefore("Secret")
     }
 
     data class DbConfig(

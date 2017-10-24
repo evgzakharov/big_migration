@@ -18,7 +18,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DisplayName("StatsController test")
-open class StatsControllerTest {
+class StatsControllerTest {
 
     @Autowired
     private lateinit var restTemplate: TestRestTemplate
