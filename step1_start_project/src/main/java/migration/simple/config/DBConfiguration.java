@@ -9,8 +9,6 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class DBConfiguration {
     private DbConfig db;
 
