@@ -1,4 +1,4 @@
-# big_migration
+# Example of migration step by step to new technologies
 Example of migration from Java project on Spring Boot 1.5 to Kotlin and Spring-webflux. And From Groovy Dsl to Kotlin Dsl in Gradle
 
 ## Step 1 
