@@ -35,7 +35,6 @@ repositories {
     maven { setUrl("http://repo.spring.io/milestone") }
 }
 
-val springBootVersion: String by project.extra
 val junitVersion: String by project.extra
 val kotlinVersion: String by project.extra
 
@@ -43,7 +42,7 @@ dependencies {
     compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion")
     compile("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
 
-    compile("org.springframework.boot:spring-boot-starter:$springBootVersion")
+    compile("org.springframework.boot:spring-boot-starter")
     compile("org.springframework:spring-webflux")
 
     compile("io.undertow:undertow-core")
