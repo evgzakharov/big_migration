@@ -1,5 +1,6 @@
 # Example of migration step by step to new technologies
-Example of migration from Java project on Spring Boot 1.5 to Kotlin, Spring Boot 2 and after to Spring-webflux. And From Groovy Dsl to Kotlin Dsl in Gradle
+Example of migration from Java project on Spring Boot 1.5 to Kotlin, Spring Boot 2 and after to Spring-webflux. 
+And From Groovy Dsl to Kotlin Dsl in Gradle
 
 ## Step 1 
 Simple project on Java and Spring Boot 1.5 with two controllers, service and in-memory repository. Project build by Groovy Dsl in Gradle
