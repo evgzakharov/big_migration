@@ -45,11 +45,13 @@ fun beansConfiguration(beanConfig: BeanDefinitionDsl.() -> Unit = {}): BeanDefin
             setSuffix(suffix)
         }
     }
+
     //processors
     bean<CommonAnnotationBeanPostProcessor>()
     bean<ConfigurationClassPostProcessor>()
     bean<ConfigurationPropertiesBindingPostProcessor>()
 
+    //additional configuration
     beanConfig()
 }
 
