@@ -1,3 +1,5 @@
+[![travis image](https://travis-ci.org/evgzakharov/big_migration.svg?branch=master)]
+
 # Example of migration step by step to new technologies
 Example of migration from Java project on Spring Boot 1.5 to Kotlin, Spring Boot 2 and after to Spring-webflux. 
 And From Groovy Dsl to Kotlin Dsl in Gradle
