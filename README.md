@@ -1,4 +1,4 @@
-[![travis image](https://travis-ci.org/evgzakharov/big_migration.svg?branch=master)]
+[![travis image](https://travis-ci.org/evgzakharov/big_migration.svg?branch=master)](https://travis-ci.org/evgzakharov/big_migration)
 
 # Example of migration step by step to new technologies
 Example of migration from Java project on Spring Boot 1.5 to Kotlin, Spring Boot 2 and after to Spring-webflux. 
